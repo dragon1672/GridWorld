@@ -7,8 +7,10 @@ import info.gridworld.grid.Location;
 
 import java.awt.Color;
 import java.util.Optional;
+import java.util.Random;
 
 public class SimpleBug extends Actor {
+    private static Random rand = new Random();
     public SimpleBug() {
         this.setColor(Color.RED);
     }
@@ -70,5 +72,14 @@ public class SimpleBug extends Actor {
             return Optional.empty();
         }
         return Optional.of(next);
+    }
+
+    /**
+     * Returns a random number between 0 -> maxExclusive.
+     * @param maxExclusive the number of values to return
+     * @return Returns a random number between 0 -> maxExclusive.
+     */
+    public int randomInt(int maxExclusive) {
+        return rand.nextInt(maxExclusive);
     }
 }
