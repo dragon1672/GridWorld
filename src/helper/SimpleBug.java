@@ -18,16 +18,20 @@ public class SimpleBug extends Actor {
     @Override
     public void act() {}
 
+    /** Rotate Right */
     public void turnRight() {
         this.setDirection(this.getDirection() + 90);
     }
+    /** Rotate left */
     public void turnLeft() {
         this.setDirection(this.getDirection() - 90);
     }
 
+    /** Attempt to move forward. Does nothing if cannot move */
     public void moveForward() {
         this.getNextPos().ifPresent(this::moveTo);
     }
+    /** Plants a flower infront. Will break if there is something already there */
     public void plantFlowerInFront(int num) {
         Optional<Location> next = getNextPos();
         if(next.isPresent()) {
@@ -38,6 +42,7 @@ public class SimpleBug extends Actor {
             flower.putSelfInGrid(this.getGrid(), next.get());
         }
     }
+    /** Will optional with flower */
     public Optional<Flower> getFlowerInFront() {
         Optional<Location> next = this.getNextPos();
         if(!next.isPresent()) {
@@ -49,6 +54,19 @@ public class SimpleBug extends Actor {
         }
         return Optional.empty();
     }
+    /** Will return null if there is no flower */
+    public Integer getFlowerInFrontValue() {
+        Optional<Location> next = this.getNextPos();
+        if(!next.isPresent()) {
+            return null;
+        }
+        Actor neighbor = this.getGrid().get(next.get());
+        if (neighbor instanceof Flower) {
+            return neighbor.getColor().getRGB();
+        }
+        return null;
+    }
+    /** check if the front has nothing in it */
     public boolean isForwardClear() {
         Optional<Location> next = this.getNextPos();
         if(!next.isPresent()) {
@@ -57,9 +75,11 @@ public class SimpleBug extends Actor {
         Actor neighbor = this.getGrid().get(next.get());
         return neighbor == null;
     }
+    /** check if there is a flower infront */
     public boolean isForwardFlower() {
         return getFlowerInFront().isPresent();
     }
+    /** check if you can move forward, (note you can trample over flowers) */
     public boolean isForwardMoveable() {
         return isForwardClear() || isForwardFlower();
     }
