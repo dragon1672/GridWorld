@@ -31,7 +31,7 @@ public class SimpleBug extends Actor {
     public void plantFlowerInFront(int num) {
         Optional<Location> next = getNextPos();
         if(next.isPresent()) {
-            Flower flower = new Flower(new Color(num));
+            Flower flower = new Flower(new Color(num, true));
             flower.putSelfInGrid(this.getGrid(), next.get());
         }
     }
