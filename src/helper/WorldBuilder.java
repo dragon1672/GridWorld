@@ -4,6 +4,9 @@ import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Rock;
 import info.gridworld.grid.Location;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 public class WorldBuilder {
     // Generated with https://keesiemeijer.github.io/maze-generator/#generate
     public static void makaDaMaze(ActorWorld world) {
@@ -207,4 +210,25 @@ public class WorldBuilder {
         world.add(new Location(18,18), new Rock());
     }
 
+    public static void makeMazeFromFile(ActorWorld world, BufferedImage image, Color wallColor) {
+        // Add top and bottom wrapping walls
+        for (int x = -1; x <= image.getWidth(); x++) {
+            world.add(new Location( -1 , x), new Rock());
+            world.add(new Location(image.getHeight(), x), new Rock());
+        }
+        // Add wrapping sides
+        for (int y = -1; y < image.getHeight() + 1; y++) {
+            world.add(new Location( y, -1), new Rock());
+            world.add(new Location(y, image.getWidth()), new Rock());
+        }
+        // Assume end point is lower right
+        world.remove(new Location(image.getHeight()-2, image.getWidth()));
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                if (image.getRGB(x,y) == wallColor.getRGB()) {
+                    world.add(new Location(y,x), new Rock());
+                }
+            }
+        }
+    }
 }
