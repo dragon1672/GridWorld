@@ -31,6 +31,9 @@ public class SimpleBug extends Actor {
     public void plantFlowerInFront(int num) {
         Optional<Location> next = getNextPos();
         if(next.isPresent()) {
+            if (getGrid().get(next.get()) != null) {
+                throw new IllegalArgumentException("Cannot plant a flower on existing thing");
+            }
             Flower flower = new Flower(new Color(num, true));
             flower.putSelfInGrid(this.getGrid(), next.get());
         }
